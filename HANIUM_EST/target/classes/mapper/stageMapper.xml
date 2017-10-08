@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="stageMapper">
+	<insert id="initStage" parameterType="stageDTO">
+		insert into STAGE_${kind}
+		values(#{email}, to_char(sysdate, 'YYYY-MM-DD HH:MI:SS'), null, 1)
+	</insert>
+	<select id="selectStage" parameterType="stageDTO" resultType="stageDTO">
+		select * from STAGE_${kind} where EMAIL = #{email}
+	</select>
+	<update id="updateStage" parameterType="stageDTO">
+		update STAGE_${kind}
+		<set>
+			<if test="stage!= null">
+				STAGE = #{stage},
+			</if>
+			<if test="endDay != null">
+				ENDDAY = to_char(sysdate, 'YYYY-MM-DD HH:MI:SS')
+			</if>
+		</set>
+		where EMAIL = #{email}
+	</update>
+	
+	<select id="outlastTwoSelectMember" parameterType="memberDTO" resultType="memberDTO">
+		select * from STAGE_OUTLAST_USER_TABLE where email = 'admin@admin.com' and password = '${password}' 
+	</select>
+</mapper>

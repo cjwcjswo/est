@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberMapper">
+	<insert id="insertMember" parameterType="memberDTO">
+		insert into MEMBER
+		values(#{email}, #{password}, #{name})
+	</insert>
+
+	<insert id="insertAuth" parameterType="authorityDTO">
+		insert into AUTH
+		values(#{email}, #{role})
+	</insert>
+	
+	<insert id="initPoint" parameterType="pointDTO">
+		insert into POINT values(#{email}, #{name}, #{point})
+	</insert>
+	
+	<update id="updatePoint" parameterType="pointDTO">
+		update POINT set POINT = POINT + #{point} where EMAIL = #{email} 
+	</update>
+	
+	<select id="checkId" parameterType="memberDTO" resultType="memberDTO">
+		select * from MEMBER where EMAIL = #{email}
+	</select>
+	
+	<select id="selectPoint" parameterType="string" resultType="pointDTO">
+		select * from POINT where EMAIL = #{value}
+	</select>
+	
+	<select id="selectRank" resultType="pointDTO">
+		select * from (select * from POINT order by POINT DESC) where ROWNUM &lt;= 50
+	</select>
+	
+	<!-- 회원의 권한 검색하기 -->
+	<select id="selectAuth" parameterType="string" resultType="authorityDTO">
+		select * from AUTH where EMAIL = #{value}
+	</select>
+</mapper>
